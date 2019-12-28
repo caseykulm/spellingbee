@@ -18,16 +18,19 @@ fun main() {
             SpellingBeeFilterRule.SevenOrFewerUnique
         )
 
+    println("There are ${beeWordSequence.count()} valid Spelling Bee words")
+
     // Set of all possible Spelling Bee UniqueCharSets. This contains all possible Spelling Bee boards as well all
     // subsets.
     val beeUcsSet: Set<UniqueCharSet> = beeWordSequence.map { UniqueCharSet(it) }.toSet()
 
-    // All possible Spelling Bee boards. A subset of the beeUcsSet, filtering for only UniqueCharSets which a unique
-    // count of 7 characters.
+    println("There are ${beeUcsSet.count()} valid Spelling Bee UniqueCharSets. (including subsets)")
+
+    // All possible Spelling Bee boards. A Spelling Bee board is a Spelling Bee UniqueCharSet with 7 unique characters.
     val beeBoards: Set<UniqueCharSet> = beeUcsSet.filter { it.uniqueCount == 7 }.toSet()
 
-    beeBoards.forEach { println(it) }
+//    beeBoards.forEach { println(it) }
 
-    println("There's ${beeBoards.size} possible boards")
+    println("There are ${beeBoards.size} valid Spelling Bee boards")
 }
 
