@@ -1,17 +1,9 @@
 import kotlin.math.pow
 
 class UniqueCharSet(word: String) {
-    private val letterMap: MutableMap<Char, Boolean> = ('a' .. 'z').associateWith { false }.toMutableMap()
-
-    init {
-        word.toCharArray().forEach { character ->
-            letterMap[character] = true
-        }
-    }
-
-    val uniqueChars: Set<Char> by lazy { letterMap.filterValues { it }.keys }
+    private val uniqueChars = word.toCharArray().toSet()
+    val uniqueCount: Int = uniqueChars.size
     val uniqueCharCombos: Set<Set<Char>> by lazy { mapToAllCombinations(uniqueChars) }
-    val uniqueCount: Int by lazy { letterMap.filterValues { it }.toList().size }
 
     private fun mapToAllCombinations(input: Set<Char>): Set<Set<Char>> {
         val combos = mutableSetOf<Set<Char>>()
@@ -65,19 +57,15 @@ class UniqueCharSet(word: String) {
 
     override fun equals(other: Any?): Boolean {
         return (other as? UniqueCharSet)?.let {
-            this.letterMap == it.letterMap
+            this.uniqueChars == it.uniqueChars
         } ?: false
     }
 
     override fun hashCode(): Int {
-        var result = letterMap.hashCode()
+        var result = uniqueChars.hashCode()
         result = 31 * result + uniqueCount
         return result
     }
 
-    override fun toString(): String {
-        return "${letterMapToString()}"
-    }
-
-    private fun letterMapToString() = letterMap.filterValues { it }.keys.toString()
+    override fun toString(): String =  uniqueChars.toString()
 }
