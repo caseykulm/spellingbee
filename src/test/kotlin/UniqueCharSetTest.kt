@@ -75,33 +75,6 @@ internal class UniqueCharSetTest {
         }
     }
 
-    data class UcsToSubUcsTruthRow(
-        val ucs: UniqueCharSet, val expectedSet: Set<UniqueCharSet>
-    )
-
-    private val ucsToSubUcsTruthTable = listOf(
-        UcsToSubUcsTruthRow(
-            ucs = UniqueCharSet("ab"),
-            expectedSet = setOf(
-                UniqueCharSet("ab"),
-                UniqueCharSet("a"),
-                UniqueCharSet("b"),
-                UniqueCharSet("")
-            )
-        )
-    )
-
-//    @Test
-//    internal fun `Given ucsToSubUcsTruthTable, When create set, Then expected content`() {
-//        ucsToSubUcsTruthTable.forEach { truthRow ->
-//            val actualSet: Set<UniqueCharacterSet> = mutableSetOf()
-//
-//            truthRow.ucs.uniqueCharacters
-//
-//            assertEquals(truthRow.expectedSet, actualSet)
-//        }
-//    }
-
     data class WordsTruthRow(
         /**
          * For now, must be a set of unique characters.
