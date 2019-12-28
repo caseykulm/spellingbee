@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="UniqueCharSetTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-12-27T03:17:06" hostname="brians-mbp.lan" time="0.012">
-  <properties/>
-  <testcase name="Given wordsTruthTable, When process, Then output is correct$spellingbee()" classname="UniqueCharSetTest" time="0.012"/>
-  <system-out><![CDATA[Input: [a, b], Actual: [[], [a], [b], [a, b]]
-Input: [t, a, c, o], Actual: [[], [a], [c], [a, c], [o], [a, o], [c, o], [a, c, o], [t], [a, t], [c, t], [a, c, t], [o, t], [a, o, t], [c, o, t], [a, c, o, t]]
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

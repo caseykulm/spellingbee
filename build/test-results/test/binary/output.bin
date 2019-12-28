@@ -1,2 +1,0 @@
-.Input: [a, b], Actual: [[], [a], [b], [a, b]]
- Input: [t, a, c, o], Actual: [[], [a], [c], [a, c], [o], [a, o], [c, o], [a, c, o], [t], [a, t], [c, t], [a, c, t], [o, t], [a, o, t], [c, o, t], [a, c, o, t]]
