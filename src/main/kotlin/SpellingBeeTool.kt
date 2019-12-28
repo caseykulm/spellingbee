@@ -1,3 +1,5 @@
+typealias SpellingBeeBoard = Set<UniqueCharSet>
+
 enum class SpellingBeeFilterRule {
     AlphaOnly,
     Length4OrGreater,
