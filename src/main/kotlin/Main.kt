@@ -26,13 +26,20 @@ fun main() {
 
     println("There are ${beeUcsSet.count()} valid Spelling Bee UniqueCharSets. (including subsets)")
 
-    // All possible Spelling Bee boards. A Spelling Bee board is a Spelling Bee UniqueCharSet with 7 unique characters.
-    val beeBoards: Set<UniqueCharSet> = beeUcsSet.filter { it.uniqueCount == 7 }.toSet()
+    // All possible seven UniqueCharSets for a Spelling Bee board. This does not take into account a center character.
+    val sevenUcsSet: Set<UniqueCharSet> = beeUcsSet.filter { it.uniqueCount == 7 }.toSet()
 
-//    beeBoards.forEach { println(it) }
+    println("There are ${sevenUcsSet.size} valid 7-UniqueCharSets")
 
-    // TODO: Generate a mapping of Spelling Bee boards to a list of all correct words for board.
+    // All possible Spelling Bee Boards
+    val beeBoardsWithCenter: List<SpellingBeeBoard> = sevenUcsSet.flatMap { ucs ->
+        IntRange(0, ucs.uniqueCount - 1).map { index ->
+            SpellingBeeBoard(ucs, ucs.uniqueChars.elementAt(index))
+        }
+    }
 
-    println("There are ${beeBoards.size} valid Spelling Bee boards")
+    println("There are ${beeBoardsWithCenter.size} valid Spelling Bee Boards")
+
+    beeBoardsWithCenter.take(10).forEach { println(it) }
 }
 

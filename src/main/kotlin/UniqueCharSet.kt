@@ -1,9 +1,11 @@
 import kotlin.math.pow
 
 class UniqueCharSet(word: String) {
-    private val uniqueChars = word.toCharArray().toSet()
+    val uniqueChars = word.toCharArray().toSet()
     val uniqueCount: Int = uniqueChars.size
     val uniqueCharCombos: Set<Set<Char>> by lazy { mapToAllCombinations(uniqueChars) }
+
+    fun contains(char: Char): Boolean = uniqueChars.contains(char)
 
     private fun mapToAllCombinations(input: Set<Char>): Set<Set<Char>> {
         val combos = mutableSetOf<Set<Char>>()
