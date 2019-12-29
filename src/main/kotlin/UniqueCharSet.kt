@@ -1,17 +1,20 @@
+import java.util.*
 import kotlin.math.pow
 
-class UniqueCharSet(word: String) : Comparable<UniqueCharSet> {
-    val uniqueChars = word.toCharArray().apply { sort() }.toSet()
+class UniqueCharSet(val uniqueChars: SortedSet<Char>) : Comparable<UniqueCharSet> {
+    constructor(word: String) : this(word.toCharArray().toSortedSet())
+    constructor(uniqueChars: Set<Char>) : this(uniqueChars.toSortedSet())
+
     val uniqueCount: Int = uniqueChars.size
-    val uniqueCharCombos: Set<Set<Char>> by lazy { mapToAllCombinations(uniqueChars) }
+    val uniqueCharSubsets: Set<UniqueCharSet> by lazy { mapToAllCombinations() }
 
     fun contains(char: Char): Boolean = uniqueChars.contains(char)
 
-    private fun mapToAllCombinations(input: Set<Char>): Set<Set<Char>> {
-        val combos = mutableSetOf<Set<Char>>()
-        val inputList = input.toList()
+    private fun mapToAllCombinations(): Set<UniqueCharSet> {
+        val combos = mutableSetOf<UniqueCharSet>()
+        val inputList = uniqueChars.toList()
 
-        val bits = input.size
+        val bits = uniqueChars.size
         val start = 0
         val end = 2.0.pow(bits).toInt()
 
@@ -41,17 +44,17 @@ class UniqueCharSet(word: String) : Comparable<UniqueCharSet> {
          */
 
         for (counter in start until end) {
-            val combo = mutableSetOf<Char>()
+            val chosenChars = mutableSetOf<Char>()
 
             counter.toString(radix = 2)
                 .reversed() // This helps deal with the loss of leading 0's being trimmed by toString
                 .forEachIndexed { index, c ->
                     if (c == '1') {
-                        combo.add(inputList[index])
+                        chosenChars.add(inputList[index])
                     }
                 }
 
-            combos.add(combo)
+            combos.add(UniqueCharSet(chosenChars))
         }
 
         return combos.toSet()

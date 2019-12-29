@@ -1,8 +1,3 @@
-import com.squareup.moshi.*
-import okio.Okio
-import java.io.File
-import java.io.InputStream
-
 enum class SpellingBeeFilterRule {
     AlphaOnly,
     Length4OrGreater,
@@ -104,11 +99,10 @@ fun createAllSolutions(dictionary: Map<String, String>): Map<SpellingBeeBoard, S
 
     // Kind of hacky
     val beeBoardsSolutionMap: Map<SpellingBeeBoard, Set<String>> = beeBoardsWithCenter.map { beeBoard ->
-        val allWords = beeBoard.ucs.uniqueCharCombos
-            .filter { set -> set.size >= 4 }
-            .filter { set -> set.contains(beeBoard.centerChar) }
-            .map { UniqueCharSet(it.joinToString(separator = "")) }
-            .flatMap { ucs: UniqueCharSet -> beeUcsToWordsMap[ucs]?.asIterable() ?: emptyList() }
+        val allWords = beeBoard.ucs.uniqueCharSubsets
+            .filter { subUcs -> subUcs.uniqueCount >= 4 }
+            .filter { subUcs -> subUcs.contains(beeBoard.centerChar) }
+            .flatMap { subUcs -> beeUcsToWordsMap[subUcs]?.asIterable() ?: emptyList() }
             .toSet()
 
         beeBoard to allWords

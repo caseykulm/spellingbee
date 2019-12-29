@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import kotlin.math.pow
 
 internal class UniqueCharSetTest {
     data class EqualityTruthRow(val word1: String, val word2: String, val shouldBeEqual: Boolean)
@@ -81,22 +80,23 @@ internal class UniqueCharSetTest {
         /**
          * For now, output string will be in alphabetical order
          */
-        val output: Set<Set<Char>>
+        val output: Set<UniqueCharSet>
     )
 
     private val wordsTruthTable = listOf(
         WordsTruthRow(
             input = "ab",
-            output = setOf("".toSet(), "a".toSet(), "b".toSet(), "ab".toSet())
+            output = setOf(UniqueCharSet(""), UniqueCharSet("a"), UniqueCharSet("b"), UniqueCharSet("ab"))
         ),
         WordsTruthRow(
             input = "taco",
             output = setOf(
-                "".toSet(),
-                "a".toSet(), "c".toSet(), "o".toSet(), "t".toSet(),
-                "ac".toSet(), "ao".toSet(), "at".toSet(), "co".toSet(), "ct".toSet(), "ot".toSet(),
-                "aco".toSet(), "act".toSet(), "aot".toSet(), "cot".toSet(),
-                "taco".toSet()
+                UniqueCharSet(""),
+                UniqueCharSet("a"), UniqueCharSet("c"), UniqueCharSet("o"), UniqueCharSet("t"),
+                UniqueCharSet("ac"), UniqueCharSet("ao"), UniqueCharSet("at"), UniqueCharSet("co"),
+                UniqueCharSet("ct"), UniqueCharSet("ot"),
+                UniqueCharSet("aco"), UniqueCharSet("act"), UniqueCharSet("aot"), UniqueCharSet("cot"),
+                UniqueCharSet("taco")
             )
         )
     )
@@ -105,11 +105,11 @@ internal class UniqueCharSetTest {
     internal fun `Given wordsTruthTable, When process, Then output is correct`() {
         wordsTruthTable.forEach { truthRow ->
             val ucs = UniqueCharSet(truthRow.input)
-            val combos = ucs.uniqueCharCombos
+            val subsets: Set<UniqueCharSet> = ucs.uniqueCharSubsets
 
-            println("Input: ${truthRow.input}, Actual: $combos")
+            println("Input: ${truthRow.input}, Actual: $subsets")
 
-            assertEquals(truthRow.output, combos)
+            assertEquals(truthRow.output, subsets)
         }
     }
 }
