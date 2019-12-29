@@ -6,6 +6,9 @@ NYT Spelling Bee board generating tool.
 
 I've used Matthew Reagan's [Webster Dictionary](https://github.com/matthewreagan/WebstersEnglishDictionary) repository.
 
+Note to self: I need to find a better dictionary source because that one does not have moonwalk (e.g. "aklmnow;n"). 
+For now I manually added that word and definition in. 
+
 ## Rules of Spelling Bee Boards
 
 Spelling bee boards must...

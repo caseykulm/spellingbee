@@ -22,7 +22,7 @@ fun main() {
         ?: error("Could not read solutions")
 
     // Solve some board
-    val filterBoard = SpellingBeeBoard(ucs = UniqueCharSet("dangrul"), centerChar = 'd')
+    val filterBoard = SpellingBeeBoard(ucs = UniqueCharSet("aklmnow"), centerChar = 'n')
     solveBoard(beeBoardsSolutionMap, filterBoard)
 }
 
