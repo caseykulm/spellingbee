@@ -37,9 +37,17 @@ private val solutionsMapType = Types.newParameterizedType(
     setOfStringsType
 )
 
-fun writeSolutionsToDisk(solutions: Map<SpellingBeeBoard, Set<String>>) {
+fun <T> timeTracking(message: String, pipe: () -> T): T {
     val startTime = System.currentTimeMillis()
+    val any = pipe()
+    val totalTime = System.currentTimeMillis() - startTime
+    println("It took $totalTime ms to $message")
+    return any
+}
 
+fun writeSolutionsToDisk(solutions: Map<SpellingBeeBoard, Set<String>>) = timeTracking(
+    message = "write all ${solutions.size} solutions to disk"
+) {
     val solutionsJsonStr: String = solutionsToJsonString(solutions)
     val resourceDirectory: File = File(DictionaryTool::class.java.classLoader.getResource("").file)
     if (resourceDirectory.listFiles().none { it.name == "solutions.json" }) {
@@ -47,9 +55,6 @@ fun writeSolutionsToDisk(solutions: Map<SpellingBeeBoard, Set<String>>) {
     }
     val solutionsFile = File(DictionaryTool::class.java.classLoader.getResource("solutions.json").file)
     copyToFile(solutionsJsonStr.byteInputStream(), solutionsFile)
-
-    val totalTime = System.currentTimeMillis() - startTime
-    println("It took $totalTime ms to write all ${solutions.size} solutions to disk")
 }
 
 private fun solutionsToJsonString(solutions: Map<SpellingBeeBoard, Set<String>>): String {
@@ -70,9 +75,11 @@ private fun copyToFile(inputStream: InputStream, outputFile: File) {
     }
 }
 
-fun readSolutionFromDisk(): Map<SpellingBeeBoard, Set<String>>? {
+fun readSolutionFromDisk(): Map<SpellingBeeBoard, Set<String>>? = timeTracking(
+    message = "read all solutions from disk"
+) {
     val solutionsFile = File(DictionaryTool::class.java.classLoader.getResource("solutions.json").file)
-    return Moshi.Builder().add(SpellingBeeBoardAdapter()).build()
+    Moshi.Builder().add(SpellingBeeBoardAdapter()).build()
         .adapter<Map<SpellingBeeBoard, Set<String>>>(solutionsMapType)
         .fromJson(Okio.buffer(Okio.source(solutionsFile)))
 }

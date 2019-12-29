@@ -50,13 +50,13 @@ class SpellingBeeBoard(val ucs: UniqueCharSet, val centerChar: Char) : Comparabl
     }
 
     override fun compareTo(other: SpellingBeeBoard): Int {
-        return ucs.compareTo(other.ucs) + centerChar.compareTo(other.centerChar)
+        return toString().compareTo(other.toString())
     }
 }
 
 fun createAllSolutions(dictionary: Map<String, String>): Map<SpellingBeeBoard, Set<String>> {
     // Sequence of Webster's Dictionary words. This is the most simple dataset that we will modify.
-    val wordSequence: Sequence<String> = dictionary.keys.asSequence().take(1000)
+    val wordSequence: Sequence<String> = dictionary.keys.asSequence()
 
     // Sequence of words that are valid entry's for a Spelling Bee game.
     val beeWordSequence = wordSequence

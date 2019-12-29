@@ -12,17 +12,17 @@ fun main() {
     val dictionary: Map<String, String> = dictionaryTool.getDictionary()
 
     // Create solutions
-    val beeBoardsSolutionMap: Map<SpellingBeeBoard, Set<String>> = createAllSolutions(dictionary)
+//    val beeBoardsSolutionMap: Map<SpellingBeeBoard, Set<String>> = createAllSolutions(dictionary)
 
     // Write solutions
-    writeSolutionsToDisk(beeBoardsSolutionMap)
+//    writeSolutionsToDisk(beeBoardsSolutionMap)
 
     // Read solutions
-//    val beeBoardsSolutionMap: Map<SpellingBeeBoard, Set<String>> = readSolutionFromDisk()
-//        ?: error("Could not read solutions")
+    val beeBoardsSolutionMap: Map<SpellingBeeBoard, Set<String>> = readSolutionFromDisk()
+        ?: error("Could not read solutions")
 
     // Solve some board
-//    val filterBoard = SpellingBeeBoard(ucs = UniqueCharSet("dangrul"), centerChar = 'd')
-//    solveBoard(beeBoardsSolutionMap, filterBoard)
+    val filterBoard = SpellingBeeBoard(ucs = UniqueCharSet("dangrul"), centerChar = 'd')
+    solveBoard(beeBoardsSolutionMap, filterBoard)
 }
 
