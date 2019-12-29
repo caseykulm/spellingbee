@@ -3,8 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.60'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+group 'com.caseykulm'
+version '0.1'
 
 sourceCompatibility = 1.8
 
