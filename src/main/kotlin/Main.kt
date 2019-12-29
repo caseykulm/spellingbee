@@ -26,6 +26,11 @@ fun main() {
 
     println("There are ${beeUcsSet.count()} valid Spelling Bee UniqueCharSets. (including subsets)")
 
+    // Set of all possible Spelling Bee UCSs to a list of words containing exactly those unique characters
+    val beeUcsToWordsMap: Map<UniqueCharSet, List<String>> = beeWordSequence.groupBy { UniqueCharSet(it) }
+
+    beeUcsToWordsMap.entries.take(5).forEach { println(it) }
+
     // All possible seven UniqueCharSets for a Spelling Bee board. This does not take into account a center character.
     val sevenUcsSet: Set<UniqueCharSet> = beeUcsSet.filter { it.uniqueCount == 7 }.toSet()
 
@@ -40,6 +45,29 @@ fun main() {
 
     println("There are ${beeBoardsWithCenter.size} valid Spelling Bee Boards")
 
-    beeBoardsWithCenter.take(10).forEach { println(it) }
+    beeBoardsWithCenter.take(14).forEach { println(it) }
+
+    val startTime = System.currentTimeMillis()
+
+    // Kind of hacky
+    val beeBoardsSolutionMap: Map<SpellingBeeBoard, Set<String>> = beeBoardsWithCenter.map { beeBoard ->
+        val allWords = beeBoard.ucs.uniqueCharCombos
+            .filter { set -> set.size >= 4 }
+            .filter { set -> set.contains(beeBoard.centerChar) }
+            .map { UniqueCharSet(it.joinToString(separator = "")) }
+            .flatMap { ucs: UniqueCharSet -> beeUcsToWordsMap[ucs]?.asIterable() ?: emptyList() }
+            .toSet()
+
+        beeBoard to allWords
+    }.toMap()
+
+    val totalTime = System.currentTimeMillis() - startTime
+    println("It took $totalTime ms to find all ${beeBoardsSolutionMap.size} solutions")
+
+    val filterBoard = SpellingBeeBoard(ucs = UniqueCharSet("dangrul"), centerChar = 'd')
+    val filterSolutions: Set<String> = beeBoardsSolutionMap[filterBoard]!!
+    val solutionsBySize: Map<Int, List<String>> = filterSolutions.groupBy { UniqueCharSet(it).uniqueCount }
+    println("Solutions for $filterBoard are: $filterSolutions")
+    println("$solutionsBySize")
 }
 
