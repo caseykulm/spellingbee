@@ -7,8 +7,7 @@ interface DictionaryTool {
     fun getDictionary(): Map<String, String>
 }
 
-class DictionaryToolImpl : DictionaryTool {
-    private val moshi = Moshi.Builder().build()
+class DictionaryToolImpl(private val moshi: Moshi) : DictionaryTool {
     private val typeAdapter: ParameterizedType = Types.newParameterizedType(
         Map::class.java,
         String::class.java,

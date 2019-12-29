@@ -1,7 +1,7 @@
 import kotlin.math.pow
 
-class UniqueCharSet(word: String) {
-    val uniqueChars = word.toCharArray().toSet()
+class UniqueCharSet(word: String) : Comparable<UniqueCharSet> {
+    val uniqueChars = word.toCharArray().apply { sort() }.toSet()
     val uniqueCount: Int = uniqueChars.size
     val uniqueCharCombos: Set<Set<Char>> by lazy { mapToAllCombinations(uniqueChars) }
 
@@ -69,5 +69,9 @@ class UniqueCharSet(word: String) {
         return result
     }
 
-    override fun toString(): String =  uniqueChars.toString()
+    override fun toString(): String =  uniqueChars.joinToString(separator = "")
+
+    override fun compareTo(other: UniqueCharSet): Int {
+        return toString().compareTo(other.toString())
+    }
 }

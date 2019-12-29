@@ -1,3 +1,8 @@
+import com.squareup.moshi.*
+import okio.Okio
+import java.io.File
+import java.io.InputStream
+
 enum class SpellingBeeFilterRule {
     AlphaOnly,
     Length4OrGreater,
@@ -22,7 +27,7 @@ private val filterAlphaOnly = { word: String -> word.contains(Regex("^[A-z]+\$")
 private val filterLength4OrGreater = { word: String -> word.length >= 4 }
 private val filterSevenOrFewerUnique = { word: String -> UniqueCharSet(word).uniqueCount <= 7 }
 
-class SpellingBeeBoard(val ucs: UniqueCharSet, val centerChar: Char) {
+class SpellingBeeBoard(val ucs: UniqueCharSet, val centerChar: Char) : Comparable<SpellingBeeBoard> {
     init {
         require(ucs.contains(centerChar))
     }
@@ -46,13 +51,17 @@ class SpellingBeeBoard(val ucs: UniqueCharSet, val centerChar: Char) {
     }
 
     override fun toString(): String {
-        return "SpellingBeeBoard(ucs=$ucs, centerChar=$centerChar)"
+        return "$ucs;$centerChar"
+    }
+
+    override fun compareTo(other: SpellingBeeBoard): Int {
+        return ucs.compareTo(other.ucs) + centerChar.compareTo(other.centerChar)
     }
 }
 
 fun createAllSolutions(dictionary: Map<String, String>): Map<SpellingBeeBoard, Set<String>> {
     // Sequence of Webster's Dictionary words. This is the most simple dataset that we will modify.
-    val wordSequence: Sequence<String> = dictionary.keys.asSequence()
+    val wordSequence: Sequence<String> = dictionary.keys.asSequence().take(1000)
 
     // Sequence of words that are valid entry's for a Spelling Bee game.
     val beeWordSequence = wordSequence

@@ -76,10 +76,7 @@ internal class UniqueCharSetTest {
     }
 
     data class WordsTruthRow(
-        /**
-         * For now, must be a set of unique characters.
-         */
-        val input: Set<Char>,
+        val input: String,
 
         /**
          * For now, output string will be in alphabetical order
@@ -89,11 +86,11 @@ internal class UniqueCharSetTest {
 
     private val wordsTruthTable = listOf(
         WordsTruthRow(
-            input = "ab".toSet(),
+            input = "ab",
             output = setOf("".toSet(), "a".toSet(), "b".toSet(), "ab".toSet())
         ),
         WordsTruthRow(
-            input = "taco".toSet(),
+            input = "taco",
             output = setOf(
                 "".toSet(),
                 "a".toSet(), "c".toSet(), "o".toSet(), "t".toSet(),
@@ -107,7 +104,7 @@ internal class UniqueCharSetTest {
     @Test
     internal fun `Given wordsTruthTable, When process, Then output is correct`() {
         wordsTruthTable.forEach { truthRow ->
-            val ucs = UniqueCharSet(truthRow.input.joinToString(separator = ""))
+            val ucs = UniqueCharSet(truthRow.input)
             val combos = ucs.uniqueCharCombos
 
             println("Input: ${truthRow.input}, Actual: $combos")
