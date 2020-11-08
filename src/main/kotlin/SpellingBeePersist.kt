@@ -2,10 +2,14 @@ import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
 import com.squareup.moshi.Types
-import okio.BufferedSource
-import okio.Okio
+import models.SpellingBeeBoard
+import okio.buffer
+import okio.sink
+import okio.source
 import java.io.File
 import java.io.InputStream
+import models.BoardSolutions
+import processor.UniqueCharSetPool
 
 /*
     Sample json
@@ -18,7 +22,7 @@ import java.io.InputStream
 
 private val setOfStringsType = Types.newParameterizedType(Set::class.java, String::class.java)
 
-private class SpellingBeeBoardAdapter {
+private class SpellingBeeBoardAdapter(private val ucsPool: UniqueCharSetPool) {
     @ToJson
     fun toJson(spellingBeeBoard: SpellingBeeBoard): String {
         return "$spellingBeeBoard"
@@ -26,7 +30,7 @@ private class SpellingBeeBoardAdapter {
     @FromJson
     fun fromJson(jsonStr: String): SpellingBeeBoard {
         val strList: List<String> = jsonStr.split(";").toList()
-        return SpellingBeeBoard(UniqueCharSet(strList[0]), strList[1][0])
+        return SpellingBeeBoard(ucsPool.getOrCreateUniqueCharSet(strList[0]), strList[1][0])
     }
 
 }
@@ -45,28 +49,28 @@ fun <T> timeTracking(message: String, pipe: () -> T): T {
     return any
 }
 
-fun writeSolutionsToDisk(solutions: Map<SpellingBeeBoard, Set<String>>) = timeTracking(
+fun writeSolutionsToDisk(solutions: BoardSolutions, ucsPool: UniqueCharSetPool) = timeTracking(
     message = "write all ${solutions.size} solutions to disk"
 ) {
-    val solutionsJsonStr: String = solutionsToJsonString(solutions)
-    val resourceDirectory: File = File(DictionaryTool::class.java.classLoader.getResource("").file)
+    val solutionsJsonStr: String = solutionsToJsonString(solutions, ucsPool)
+    val resourceDirectory: File = File(SpellingBeeBoard::class.java.classLoader.getResource("").file)
     if (resourceDirectory.listFiles().none { it.name == "solutions.json" }) {
         File(resourceDirectory.path + "/solutions.json").createNewFile()
     }
-    val solutionsFile = File(DictionaryTool::class.java.classLoader.getResource("solutions.json").file)
+    val solutionsFile = File(SpellingBeeBoard::class.java.classLoader.getResource("solutions.json").file)
     copyToFile(solutionsJsonStr.byteInputStream(), solutionsFile)
 }
 
-private fun solutionsToJsonString(solutions: Map<SpellingBeeBoard, Set<String>>): String {
-    return Moshi.Builder().add(SpellingBeeBoardAdapter()).build()
+private fun solutionsToJsonString(solutions: BoardSolutions, ucsPool: UniqueCharSetPool): String {
+    return Moshi.Builder().add(SpellingBeeBoardAdapter(ucsPool)).build()
         .adapter<Map<SpellingBeeBoard, Set<String>>>(solutionsMapType)
 //        .indent("    ") // Can add this for smaller sizes, but this drastically increases file size
         .toJson(solutions)
 }
 
 private fun copyToFile(inputStream: InputStream, outputFile: File) {
-    val source = Okio.buffer(Okio.source(inputStream))
-    val sink = Okio.buffer(Okio.sink(outputFile))
+    val source = inputStream.source().buffer()
+    val sink = outputFile.sink().buffer()
 
     source.use { input ->
         sink.use { output ->
@@ -75,11 +79,11 @@ private fun copyToFile(inputStream: InputStream, outputFile: File) {
     }
 }
 
-fun readSolutionFromDisk(): Map<SpellingBeeBoard, Set<String>>? = timeTracking(
+fun readSolutionFromDisk(ucsPool: UniqueCharSetPool): BoardSolutions? = timeTracking(
     message = "read all solutions from disk"
 ) {
-    val solutionsFile = File(DictionaryTool::class.java.classLoader.getResource("solutions.json").file)
-    Moshi.Builder().add(SpellingBeeBoardAdapter()).build()
+    val solutionsFile = File(SpellingBeeBoard::class.java.classLoader.getResource("solutions.json").file)
+    Moshi.Builder().add(SpellingBeeBoardAdapter(ucsPool)).build()
         .adapter<Map<SpellingBeeBoard, Set<String>>>(solutionsMapType)
-        .fromJson(Okio.buffer(Okio.source(solutionsFile)))
+        .fromJson(solutionsFile.source().buffer())
 }

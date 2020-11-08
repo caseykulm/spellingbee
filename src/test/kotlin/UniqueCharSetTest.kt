@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import processor.SimpleUniqueCharSetPool
+import processor.UniqueCharSetPool
 
 internal class UniqueCharSetTest {
     data class EqualityTruthRow(val word1: String, val word2: String, val shouldBeEqual: Boolean)
@@ -105,11 +107,21 @@ internal class UniqueCharSetTest {
     internal fun `Given wordsTruthTable, When process, Then output is correct`() {
         wordsTruthTable.forEach { truthRow ->
             val ucs = UniqueCharSet(truthRow.input)
-            val subsets: Set<UniqueCharSet> = ucs.uniqueCharSubsets
+            val subsets: Set<UniqueCharSet> = ucs.uniqueCharSubsets(SimpleUniqueCharSetPool())
 
             println("Input: ${truthRow.input}, Actual: $subsets")
 
             assertEquals(truthRow.output, subsets)
         }
+    }
+
+    @Test
+    internal fun `Given MutableSet of Chars, When create UCS, Then output is correct`() {
+        val charSet = mutableSetOf('c', 'b', 'a')
+        val word = charSet.joinToString(separator = "")
+
+        val ucs = UniqueCharSet(word)
+
+        assertEquals("abc", ucs.toString())
     }
 }
