@@ -30,12 +30,12 @@ fun main() {
     writeSolutionsToDisk(beeBoardsSolutionMap, ucsPool)
 
     // Read solutions
-//    val beeBoardsSolutionMap: Map<models.SpellingBeeBoard, Set<String>> = readSolutionFromDisk()
+//    val beeBoardsSolutionMap: Map<SpellingBeeBoard, Set<String>> = readSolutionFromDisk(ucsPool)
 //        ?: error("Could not read solutions")
 
     // Solve some board
 //    val filterBoard = models.SpellingBeeBoard(ucs = UniqueCharSet("flatdwo"), centerChar = 't') // no solution for this
-    val filterBoard = SpellingBeeBoard(ucs = UniqueCharSet("iuontcm"), centerChar = 't')
+    val filterBoard = SpellingBeeBoard(ucs = UniqueCharSet("ecfiatb"), centerChar = 'f')
     solveBoard(beeBoardsSolutionMap, filterBoard, ucsPool)
 }
 

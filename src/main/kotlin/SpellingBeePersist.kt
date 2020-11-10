@@ -41,15 +41,7 @@ private val solutionsMapType = Types.newParameterizedType(
     setOfStringsType
 )
 
-fun <T> timeTracking(message: String, pipe: () -> T): T {
-    val startTime = System.currentTimeMillis()
-    val any = pipe()
-    val totalTime = System.currentTimeMillis() - startTime
-    println("It took $totalTime ms to $message")
-    return any
-}
-
-fun writeSolutionsToDisk(solutions: BoardSolutions, ucsPool: UniqueCharSetPool) = timeTracking(
+fun writeSolutionsToDisk(solutions: BoardSolutions, ucsPool: UniqueCharSetPool) = timing(
     message = "write all ${solutions.size} solutions to disk"
 ) {
     val solutionsJsonStr: String = solutionsToJsonString(solutions, ucsPool)
@@ -79,7 +71,7 @@ private fun copyToFile(inputStream: InputStream, outputFile: File) {
     }
 }
 
-fun readSolutionFromDisk(ucsPool: UniqueCharSetPool): BoardSolutions? = timeTracking(
+fun readSolutionFromDisk(ucsPool: UniqueCharSetPool): BoardSolutions? = timing(
     message = "read all solutions from disk"
 ) {
     val solutionsFile = File(SpellingBeeBoard::class.java.classLoader.getResource("solutions.json").file)
