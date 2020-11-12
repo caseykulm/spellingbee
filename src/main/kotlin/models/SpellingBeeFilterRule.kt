@@ -1,7 +1,6 @@
 package models
 
 import processor.UniqueCharSetPool
-import uniqueCount
 
 enum class SpellingBeeFilterRule(val predicate: (String, UniqueCharSetPool) -> Boolean) {
     AlphaOnly(predicate = { word: String, _: UniqueCharSetPool -> word.contains(Regex("^[A-z]+\$")) }),

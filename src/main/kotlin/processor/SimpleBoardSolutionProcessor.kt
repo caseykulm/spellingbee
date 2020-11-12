@@ -1,6 +1,5 @@
 package processor
 
-import UniqueCharSet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -10,10 +9,11 @@ import models.BoardSolutions
 import models.Dictionary
 import models.SpellingBeeBoard
 import models.SpellingBeeFilterRule
+import models.UniqueCharSet
+import models.uniqueCharSubsets
+import models.uniqueCount
 import models.words
 import timing
-import uniqueCharSubsets
-import uniqueCount
 
 class SimpleBoardSolutionProcessor(
     private val ucsPool: UniqueCharSetPool,

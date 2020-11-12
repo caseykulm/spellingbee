@@ -1,6 +1,6 @@
 package processor
 
-import UniqueCharSet
+import models.UniqueCharSet
 
 interface UniqueCharSetPool {
     fun getOrCreateUniqueCharSet(word: String): UniqueCharSet

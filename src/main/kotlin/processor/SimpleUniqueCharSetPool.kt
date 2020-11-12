@@ -1,6 +1,6 @@
 package processor
 
-import UniqueCharSet
+import models.UniqueCharSet
 
 class SimpleUniqueCharSetPool : UniqueCharSetPool {
     private var cacheHitCount = 0

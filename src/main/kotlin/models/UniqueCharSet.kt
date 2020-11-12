@@ -1,3 +1,5 @@
+package models
+
 import java.util.*
 import kotlin.math.pow
 import processor.UniqueCharSetPool

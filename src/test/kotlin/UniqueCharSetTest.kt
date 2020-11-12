@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import processor.SimpleUniqueCharSetPool
-import processor.UniqueCharSetPool
 
 internal class UniqueCharSetTest {
     data class EqualityTruthRow(val word1: String, val word2: String, val shouldBeEqual: Boolean)

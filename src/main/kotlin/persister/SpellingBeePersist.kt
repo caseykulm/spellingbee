@@ -1,3 +1,5 @@
+package persister
+
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
@@ -10,6 +12,7 @@ import java.io.File
 import java.io.InputStream
 import models.BoardSolutions
 import processor.UniqueCharSetPool
+import timing
 
 /*
     Sample json

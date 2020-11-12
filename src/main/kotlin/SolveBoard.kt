@@ -1,5 +1,6 @@
 import models.BoardSolutions
 import models.SpellingBeeBoard
+import models.uniqueCount
 import processor.UniqueCharSetPool
 
 fun solveBoard(

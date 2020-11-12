@@ -1,7 +1,5 @@
 package models
 
-import UniqueCharSet
-
 class SpellingBeeBoard(val ucs: UniqueCharSet, val centerChar: Char) : Comparable<SpellingBeeBoard> {
     init {
         require(ucs.contains(centerChar))
