@@ -25,7 +25,7 @@ class SimpleMapDictionaryParser(private val moshi: Moshi) : DictionaryParserDeco
     }
 
     override fun filePathToString(filePath: String): String {
-        // javaClass.classLoader.getResource("dictionary.json").file
+        // javaClass.classLoader.getResource("reagan_webster_dictionary.json").file
         val dictionaryFile = File(filePath)
         return dictionaryFile.source().buffer().readUtf8()
     }

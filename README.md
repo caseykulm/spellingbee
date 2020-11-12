@@ -4,10 +4,24 @@ NYT Spelling Bee board generating tool.
 
 ## Dictionary
 
-I've used Matthew Reagan's [Webster Dictionary](https://github.com/matthewreagan/WebstersEnglishDictionary) repository.
+### Matthew Reagan's Webster Dictionary
 
-Note to self: I need to find a better dictionary source because that one does not have moonwalk (e.g. "aklmnow;n"). 
-For now I manually added that word and definition in. 
+[Source](https://github.com/matthewreagan/WebstersEnglishDictionary)
+
+This dictionary seems to be missing a lot of words, but also has a ton of uncommon words.
+
+### Google's 10k Most Used English n-grams
+
+[Source](https://github.com/first20hours/google-10000-english)
+
+Specifically using the [10k most common words](https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english.txt).
+
+### Peter Norvig's n-grams
+
+[Source](https://norvig.com/ngrams/)
+
+Specifically using the [1/3 Million most common words](https://norvig.com/ngrams/count_1w.txt), but using `sed 's/[0-9]*//g'` to 
+remove the frequencies.
 
 ## Rules of Spelling Bee Boards
 
