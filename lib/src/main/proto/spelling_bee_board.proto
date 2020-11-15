@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option java_package = "com.caseykulm.spellingbee.proto";
+option java_multiple_files = true;
+
+message ProtoSpellingBeeBoard {
+    string word = 1;
+
+    // Could use int32 for a character here, but sticking with string for now
+    string center_char = 2;
+}
+
+message ProtoBoardSolution {
+    repeated string solution = 1;
+}
+
+message ProtoBoardSolutions {
+    // Will use the hash of a SpellingBeeBoard as the key since the key can only be primitive
+    map<int32, ProtoBoardSolution> solutions_map = 1;
+}
