@@ -15,6 +15,6 @@ message ProtoBoardSolution {
 }
 
 message ProtoBoardSolutions {
-    // Will use the hash of a SpellingBeeBoard as the key since the key can only be primitive
-    map<int32, ProtoBoardSolution> solutions_map = 1;
+    // Will use the toString of a SpellingBeeBoard as the key since the key can only be primitive
+    map<string, ProtoBoardSolution> solutions_map = 1;
 }
