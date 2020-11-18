@@ -2,8 +2,9 @@ pluginManagement {
     // https://github.com/square/wire/issues/1848#issuecomment-724924554
     resolutionStrategy {
         eachPlugin {
-            if (requested.id.id == "com.squareup.wire") {
-                useModule("com.squareup.wire:wire-gradle-plugin:3.5.0")
+            when (requested.id.id) {
+                "com.squareup.wire" -> useModule("com.squareup.wire:wire-gradle-plugin:3.5.0")
+                "com.squareup.sqldelight" -> useModule("com.squareup.sqldelight:gradle-plugin:1.4.3")
             }
         }
     }
