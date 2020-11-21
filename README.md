@@ -23,6 +23,14 @@ Specifically using the [10k most common words](https://raw.githubusercontent.com
 Specifically using the [1/3 Million most common words](https://norvig.com/ngrams/count_1w.txt), but using `sed 's/[0-9]*//g'` to 
 remove the frequencies.
 
+This does not contain all the missing words I've been looking for, and has a lot of words that clearly don't exist.
+
+### Dwyl >466k English Words
+
+[Source](https://github.com/dwyl/english-words)
+
+Contains a lot of the missing words I've been looking for, but also has a lot of words that clearly don't exist. 
+
 ## Rules of Spelling Bee Boards
 
 Spelling bee boards must...

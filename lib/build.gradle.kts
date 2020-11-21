@@ -30,10 +30,13 @@ plugins {
 ktlint {
     version.set(Versions.ktlint)
     android.set(false)
+    filter {
+        exclude("**/generated/**")
+    }
 }
 
 configure<SqlDelightExtension>() {
-    database(name = "BoardSolutionsDb") {
+    database(name = "SpellingBeeDatabase") {
         packageName = "com.caseykulm.spellingbee"
     }
 }
@@ -53,4 +56,6 @@ dependencies {
     testImplementation(Deps.Kotlin.test)
     testImplementation(Deps.Kotlin.testCommon)
     testImplementation(Deps.Kotlin.testJunit5)
+
+    implementation(Deps.sqldelight)
 }

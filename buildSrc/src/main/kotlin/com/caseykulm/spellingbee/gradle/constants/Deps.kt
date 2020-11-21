@@ -21,4 +21,5 @@ object Deps {
         const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}"
     }
     val okio = "com.squareup.okio:okio:2.9.0"
+    val sqldelight = "com.squareup.sqldelight:sqlite-driver:1.4.3"
 }
