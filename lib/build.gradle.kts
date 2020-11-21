@@ -1,5 +1,6 @@
 import com.caseykulm.spellingbee.gradle.constants.Deps
 import com.caseykulm.spellingbee.gradle.constants.Versions
+import com.squareup.sqldelight.gradle.SqlDelightExtension
 
 group = "com.caseykulm.spellingbee"
 version = "0.1"
@@ -20,6 +21,7 @@ plugins {
     `java-library`
     `maven-publish`
     id("com.squareup.wire")
+    id("com.squareup.sqldelight")
     id("org.jlleitschuh.gradle.ktlint") version "9.4.0"
     id("spellingbee")
 }
@@ -28,6 +30,15 @@ plugins {
 ktlint {
     version.set(Versions.ktlint)
     android.set(false)
+    filter {
+        exclude("**/generated/**")
+    }
+}
+
+configure<SqlDelightExtension>() {
+    database(name = "SpellingBeeDatabase") {
+        packageName = "com.caseykulm.spellingbee"
+    }
 }
 
 dependencies {
@@ -45,4 +56,6 @@ dependencies {
     testImplementation(Deps.Kotlin.test)
     testImplementation(Deps.Kotlin.testCommon)
     testImplementation(Deps.Kotlin.testJunit5)
+
+    implementation(Deps.sqldelight)
 }
