@@ -1,8 +1,10 @@
 import com.squareup.moshi.Moshi
+import models.BoardSolutionQuery
 import models.BoardSolutions
 import models.Dictionary
 import models.SpellingBeeBoard
 import models.UniqueCharSet
+import models.uniqueCount
 import parser.DictionaryParser
 import parser.SimpleMapDictionaryParser
 import parser.WordPerLineParser
@@ -10,29 +12,49 @@ import processor.BoardSolutionsProcessor
 import processor.SimpleBoardSolutionProcessor
 import processor.SimpleUniqueCharSetPool
 import processor.UniqueCharSetPool
-import serialization.BufferedBoardSolutionsSerializer
-import serialization.SimpleBoardSolutionsDeserializer
-import serialization.SimpleBoardSolutionsSerializer
+import serialization.DatabaseBoardSolutionQuery
+import serialization.DatabaseBoardSolutionsSerializer
 
 fun main() {
     println("Spelling Bee booting up...")
 
     val ucsPool = SimpleUniqueCharSetPool()
-    val dictionarySource = DictionarySource.Novig333k
+    val dictionarySource = DictionarySource.ReaganWebster
     val dictionary: Map<String, String> = getDictionary(dictionarySource)
 
-    val mode = Mode.Write
+    val mode = Mode.Read
     val serializationMethod = SerializationMethod.Database
-    val beeBoardsSolutionMap: Map<SpellingBeeBoard, Set<String>> =
-        getBeeBoardsSolutionMap(mode, serializationMethod, dictionary, dictionarySource, ucsPool)
-
-    // Solve some board
-    val filterBoard = SpellingBeeBoard(
-        ucs = UniqueCharSet("amtolbh"),
-        centerChar = 'o'
+    val boardSolutionQuery: BoardSolutionQuery = getBeeBoardsSolutionQuery(
+        mode,
+        serializationMethod,
+        dictionary,
+        dictionarySource,
+        ucsPool
     )
-    solveBoard(beeBoardsSolutionMap, filterBoard, ucsPool)
+
+    solveSampleBoards(boardSolutionQuery)
+    ucsPool.logHitMissRate()
 }
+
+private fun solveSampleBoards(boardSolutionQuery: BoardSolutionQuery) {
+    sampleBoards.forEach { sampleBoard ->
+        val boardSolutions: Set<String> = boardSolutionQuery.getSolutions(sampleBoard)
+        println("Solutions for $sampleBoard are: $boardSolutions")
+        val pangrams: Set<String> = boardSolutions.filter { UniqueCharSet(it).uniqueCount == 7 }.toSet()
+        println("\tPangrams for $sampleBoard are: $pangrams")
+    }
+}
+
+val sampleBoards: List<SpellingBeeBoard> = listOf(
+    // mannequin
+    SpellingBeeBoard(UniqueCharSet("aeimnqu"), 'm'),
+
+    // friction
+    SpellingBeeBoard(UniqueCharSet("cfinort"), 'i'),
+
+    // guilted
+    SpellingBeeBoard(UniqueCharSet("degiltu"), 'g')
+)
 
 enum class Mode {
     Read, Write
@@ -42,38 +64,31 @@ enum class SerializationMethod {
     Json, Database
 }
 
-private fun getBeeBoardsSolutionMap(
+private fun getBeeBoardsSolutionQuery(
     mode: Mode,
     serializationMethod: SerializationMethod,
     dictionary: Dictionary,
     dictionarySource: DictionarySource,
     ucsPool: UniqueCharSetPool
-): Map<SpellingBeeBoard, Set<String>> {
+): BoardSolutionQuery {
     return when (mode) {
         Mode.Read -> when (serializationMethod) {
-            SerializationMethod.Json -> {
-                val boardSolutionsDeserializer = SimpleBoardSolutionsDeserializer()
-                boardSolutionsDeserializer.deserialize(ucsPool)
+            SerializationMethod.Json -> TODO()
+            SerializationMethod.Database -> {
+                DatabaseBoardSolutionQuery(dictionarySource.name.toLowerCase())
             }
-            SerializationMethod.Database -> TODO()
         }
         Mode.Write -> when (serializationMethod) {
-            SerializationMethod.Json -> {
-                val boardSolutions: BoardSolutions = createSolutions(ucsPool, dictionary)
-
-                // Write solutions
-                val boardSolutionsPersister = SimpleBoardSolutionsSerializer()
-                boardSolutionsPersister.serialize(boardSolutions, ucsPool)
-
-                boardSolutions
-            }
+            SerializationMethod.Json -> TODO()
             SerializationMethod.Database -> {
+                val boardSolutionQuery = DatabaseBoardSolutionQuery(dictionarySource.name.toLowerCase())
                 val boardSolutions: BoardSolutions = createSolutions(ucsPool, dictionary)
 
-                val boardSolutionsPersister = BufferedBoardSolutionsSerializer(dictionarySource.name.toLowerCase())
+                val boardSolutionsPersister = DatabaseBoardSolutionsSerializer(dictionarySource.name.toLowerCase())
                 boardSolutionsPersister.serialize(boardSolutions, ucsPool)
 
                 boardSolutions
+                boardSolutionQuery
             }
         }
     }

@@ -6,4 +6,5 @@ object Versions {
     const val kotlinx = "1.3.9"
     const val ktlint = "0.39.0"
     const val moshi = "1.11.0"
+    const val sqldelight = "1.4.3"
 }

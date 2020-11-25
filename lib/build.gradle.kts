@@ -31,7 +31,8 @@ ktlint {
     version.set(Versions.ktlint)
     android.set(false)
     filter {
-        exclude("**/generated/**")
+        // https://github.com/gradle/gradle/issues/3417
+        exclude { element -> element.file.path.contains("generated/") }
     }
 }
 
@@ -57,5 +58,6 @@ dependencies {
     testImplementation(Deps.Kotlin.testCommon)
     testImplementation(Deps.Kotlin.testJunit5)
 
-    implementation(Deps.sqldelight)
+    implementation(Deps.SqlDelight.core)
+    implementation(Deps.SqlDelight.coroutines)
 }

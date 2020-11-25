@@ -11,7 +11,7 @@ import timing
 import java.io.File
 import java.io.InputStream
 
-class SimpleBoardSolutionsSerializer : BoardSolutionsSerializer {
+class JsonBoardSolutionsSerializer : BoardSolutionsSerializer {
     override fun serialize(boardSolutions: BoardSolutions, ucsPool: UniqueCharSetPool) = timing(
         message = "serialize all ${boardSolutions.size} solutions"
     ) {
