@@ -4,7 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
-import models.BoardSolution
+import models.BoardSolutionEntry
 import models.BoardSolutions
 import models.Dictionary
 import models.SpellingBeeBoard
@@ -134,7 +134,7 @@ class SimpleBoardSolutionProcessor(
     private fun mapToBeeBoardSolution(
         beeUcsToWordsMap: Map<UniqueCharSet, List<String>>,
         beeBoard: SpellingBeeBoard
-    ): BoardSolution {
+    ): BoardSolutionEntry {
         val allWords = beeBoard.ucs.uniqueCharSubsets(ucsPool)
             .filter { subUcs -> subUcs.uniqueCount >= 4 }
             .filter { subUcs -> subUcs.contains(beeBoard.centerChar) }

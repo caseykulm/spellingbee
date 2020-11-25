@@ -1,5 +1,7 @@
 package models
 
+import processor.UniqueCharSetPool
+
 class SpellingBeeBoard(val ucs: UniqueCharSet, val centerChar: Char) : Comparable<SpellingBeeBoard> {
     init {
         require(ucs.contains(centerChar))
@@ -29,5 +31,14 @@ class SpellingBeeBoard(val ucs: UniqueCharSet, val centerChar: Char) : Comparabl
 
     override fun compareTo(other: SpellingBeeBoard): Int {
         return toString().compareTo(other.toString())
+    }
+}
+
+fun String.toSpellingBeeBoard(ucsPool: UniqueCharSetPool): SpellingBeeBoard {
+    return this.split(";").let {
+        SpellingBeeBoard(
+            ucsPool.getOrCreateUniqueCharSet(it[0]),
+            it[1].toCharArray()[0]
+        )
     }
 }

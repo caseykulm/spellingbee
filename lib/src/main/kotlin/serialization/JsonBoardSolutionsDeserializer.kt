@@ -9,7 +9,7 @@ import processor.UniqueCharSetPool
 import timing
 import java.io.File
 
-class SimpleBoardSolutionsDeserializer : BoardSolutionsDeserializer {
+class JsonBoardSolutionsDeserializer : BoardSolutionsDeserializer {
     override fun deserialize(ucsPool: UniqueCharSetPool): BoardSolutions = timing(
         message = "deserialize all solutions"
     ) {

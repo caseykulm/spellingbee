@@ -1,5 +1,5 @@
-CREATE TABLE boardSolution (
-    board TEXT NOT NULL,
+CREATE TABLE IF NOT EXISTS boardSolution (
+    board TEXT NOT NULL PRIMARY KEY,
     solutions TEXT NOT NULL
 );
 
@@ -13,5 +13,5 @@ FROM boardSolution
 WHERE board = ?;
 
 insert:
-INSERT INTO boardSolution(board, solutions)
+REPLACE INTO boardSolution(board, solutions)
 VALUES (?, ?);

@@ -10,7 +10,7 @@ class WordPerLineParser(val lineLimit: Int) : DictionaryParser {
         val file = File(filePath)
         val source = file.source()
         val fileStr = source.buffer().readUtf8()
-        val words = fileStr.split(Regex("\n"))
+        val words = fileStr.split(Regex("[\n\r]")) // dwyl has \r line separators :ytho:
 
         return words
             .take(lineLimit)
